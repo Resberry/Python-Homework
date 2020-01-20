@@ -58,8 +58,9 @@ while True:  
    3. 打印出杨辉三角, 程序请命名为yanghui.py。
    
 ```python
-import sys  
-def cnk(n,k):  
+#i
+import sys  
+def cnk(n,k):  
     s1=1  
     s2=1  
     for i in range(k):  
@@ -72,6 +73,7 @@ print(cnk(n,k))  
 ```
 
 ```python
+#ii
 def cnk(n,k):  
     s1=1  
     s2=1  
@@ -84,6 +86,7 @@ print(n)  
 ```
 
 ```python
+#iii
 import sys  
 def cnk(n,k):  
     s1=1  
