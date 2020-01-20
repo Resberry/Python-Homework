@@ -7,31 +7,31 @@ palindrome翻译为“回文”，即正读反读都一样的词语 or 对象。
    3. 记所有 palindromes 中最长的单词的长度为 max_length，输出长度分别为 2 至 max_length 的 palindromes 的个数。
 
 ```python
-1.def palindromes(s):  
-2.    s2=s[:]  
-3.    l2=list(s2)  
-4.    l1=list(s)  
-5.    l1.reverse()  
-6.    if l1==l2:  
-7.        return True  
-8.    else:  
-9.        return False  
-10.list_p=[]  
-11.list_l=[]  
-12.with open('words.txt','r') as f:  
-13.    n=f.readlines()  
-14.for i in range(len(n)):  
-15.    if palindromes(n[i][:-1]):  
-16.        list_l.append(len(n[i])-1)  
-17.        list_p.append(str(i+1).rjust(6)+' '+n[i])  
-18.with open('palindromes.txt','w',encoding='utf-8') as f:  
-19.    f.writelines(list_p)  
-20.    f.write('\n')  
-21.    f.write('=== palindromes 的统计信息 ==='+'\n')  
-22.    f.write('There are %d palindromes in the dictionary.'%len(list_p)+'\n')  
-23.    f.write('length | count'+'\n')  
-24.    for i in range(2,max(list_l)+1):  
-25.        f.write(str(i).rjust(6)+' | '+str(list_l.count(i)).ljust(5)+'\n')  
+def palindromes(s):  
+    s2=s[:]  
+    l2=list(s2)  
+    l1=list(s)  
+    l1.reverse()  
+    if l1==l2:  
+        return True  
+    else:  
+        return False  
+list_p=[]  
+list_l=[]  
+with open('words.txt','r') as f:  
+    n=f.readlines()  
+for i in range(len(n)):  
+    if palindromes(n[i][:-1]):  
+        list_l.append(len(n[i])-1)  
+        list_p.append(str(i+1).rjust(6)+' '+n[i])  
+with open('palindromes.txt','w',encoding='utf-8') as f:  
+    f.writelines(list_p)  
+    f.write('\n')  
+    f.write('=== palindromes 的统计信息 ==='+'\n')  
+    f.write('There are %d palindromes in the dictionary.'%len(list_p)+'\n')  
+    f.write('length | count'+'\n')  
+    for i in range(2,max(list_l)+1):  
+        f.write(str(i).rjust(6)+' | '+str(list_l.count(i)).ljust(5)+'\n')  
 ```
 
 2. anagram  
@@ -43,48 +43,48 @@ anagram 翻译为“变位词”，即把单词 A 的字母顺序打乱，重新
    5. 输出所有单词长度为 max_word 的 anagram 组的成员。
 
 ```python
-1.with open('words.txt','r') as f:  
-2.    n=f.readlines()  
-3.n2=n[:]  
-4.for i in range(len(n2)):  
-5.    n2[i]=n2[i][:-1]  
-6.d,ans= {},[]  
-7.list_str=[]  
-8.list_lc=[]  
-9.list_lw=[]  
-10.for i in n2:  
-11.    sortstr=''.join(sorted(i))  
-12.    if sortstr in d:  
-13.        d[sortstr]+=[i]  
-14.    else:  
-15.        d[sortstr]=[i]  
-16.for i in d:  
-17.    tmp=d[i]  
-18.    tmp.sort()  
-19.    ans+=[tmp]  
-20.for i in range(len(ans)):  
-21.    if len(ans[i])>1:  
-22.        list_str+=[ans[i]]  
-23.for i in list_str:  
-24.    list_lc+=[len(i)]  
-25.    list_lw+=[len(i[0])]  
-26.lc=max(list_lc)  
-27.lw=max(list_lw)  
-28.lcc=[idx for idx,i in enumerate(list_lc) if i==lc]  
-29.lww=[idx for idx,i in enumerate(list_lw) if i==lw]  
-30.with open('anagrams.txt','w',encoding='utf-8') as f:  
-31.    for i in range(len(list_str)):  
-32.        f.write(' '.join(list_str[i])+'\n')  
-33.    f.write('\n')  
-34.    f.write('=== anagrams 组的统计信息 ==='+'\n')  
-35.    f.write('There are %d anagram groups in the dictionary.'%len(list_str)+'\n')  
-36.    f.write('max_group = %d, max_word = %d.'%(lc,lw)+'\n')  
-37.    f.write('组长度为 max_group 的组如下:'+'\n')  
-38.    for i in lcc:  
-39.        f.write(str(list_str[i])+'\n')  
-40.    f.write('单词长度为 max_word 的组如下:'+'\n')  
-41.    for i in lww:  
-42.        f.write(str(list_str[i])+'\n')  
+with open('words.txt','r') as f:  
+    n=f.readlines()  
+n2=n[:]  
+for i in range(len(n2)):  
+    n2[i]=n2[i][:-1]  
+d,ans= {},[]  
+list_str=[]  
+list_lc=[]  
+list_lw=[]  
+for i in n2:  
+    sortstr=''.join(sorted(i))  
+    if sortstr in d:  
+        d[sortstr]+=[i]  
+    else:  
+        d[sortstr]=[i]  
+for i in d:  
+    tmp=d[i]  
+    tmp.sort()  
+    ans+=[tmp]  
+for i in range(len(ans)):  
+    if len(ans[i])>1:  
+        list_str+=[ans[i]]  
+for i in list_str:  
+    list_lc+=[len(i)]  
+    list_lw+=[len(i[0])]  
+lc=max(list_lc)  
+lw=max(list_lw)  
+lcc=[idx for idx,i in enumerate(list_lc) if i==lc]  
+lww=[idx for idx,i in enumerate(list_lw) if i==lw]  
+with open('anagrams.txt','w',encoding='utf-8') as f:  
+    for i in range(len(list_str)):  
+        f.write(' '.join(list_str[i])+'\n')  
+    f.write('\n')  
+    f.write('=== anagrams 组的统计信息 ==='+'\n')  
+    f.write('There are %d anagram groups in the dictionary.'%len(list_str)+'\n')  
+    f.write('max_group = %d, max_word = %d.'%(lc,lw)+'\n')  
+    f.write('组长度为 max_group 的组如下:'+'\n')  
+    for i in lcc:  
+        f.write(str(list_str[i])+'\n')  
+    f.write('单词长度为 max_word 的组如下:'+'\n')  
+    for i in lww:  
+        f.write(str(list_str[i])+'\n')  
 ```
 
 3. letter frequency
@@ -112,7 +112,16 @@ plt.show()  
 ```
 
 4. strings in python
-   1. 简述str data type中下述函数的作用；
+   1. 简述str data type中下述函数的作用； 
+   2. 用python代码展示上表中部分函数的用法：
+      1. 对于字符串'to be, or not to be'，分别给出'a'，'b'，'be'出现的次数；
+      2. 对于字符串'to be, or not to be'，分别检查它是否以'to'开头，是否以'be'结尾；
+      3. 对于字符串'to be, or not to be'，检查'be'是否是它的子串，若是，给出该子串在原串出现的位置 (即下标)；
+      4. 对于字符串'to be, or not to be'，把'to'替换为'TO'，但只替换一次；
+      5. 对于字符串列表`idens=['','5','5a','a','a5','_','_3','__a']`，打印出属于python语言的合法的identifier的那些字符串；
+      6. 对于ascii表中0-127号字符，调用isspace()判断哪些是whitespaces，输出whitespaces的两位大写hex码；
+      7. 本题考察对齐字符串时经常用到的三个函数：ljust()，rjust()，and center()。在下面的code snippet中直接填入三行代码即可：
+
 |函数	|作用|
 |--|--|
 |center	|居中显示。|
@@ -133,49 +142,41 @@ plt.show()  
 |strip	|去除字符串两端的指定字符。|
 |translate	|将字符串用某种映射关系翻译为另一个字符串。|
 |zfill	|返回指定长度的字符串。右对齐，空白部分用0填充。|
-   2. 用python代码展示上表中部分函数的用法：
-1. 对于字符串'to be, or not to be'，分别给出'a'，'b'，'be'出现的次数；
-2. 对于字符串'to be, or not to be'，分别检查它是否以'to'开头，是否以'be'结尾；
-3. 对于字符串'to be, or not to be'，检查'be'是否是它的子串，若是，给出该子串在原串出现的位置 (即下标)；
-4. 对于字符串'to be, or not to be'，把'to'替换为'TO'，但只替换一次；
-5. 对于字符串列表idens=['','5','5a','a','a5','_','_3','__a']，打印出属于python语言的合法的identifier的那些字符串；
-6. 对于ascii表中0-127号字符，调用isspace()判断哪些是whitespaces，输出whitespaces的两位大写hex码；
-7. 本题考察对齐字符串时经常用到的三个函数：ljust()，rjust()，and center()。在下面的code snippet中直接填入三行代码即可：
 
-1.s='to be, or not to be'  
-2.print('-----1.测试count()-----')  
-3.print('a在to be, or not to be中出现了%d次'%s.count('a'))  
-4.print('b在to be, or not to be中出现了%d次'%s.count('b'))  
-5.print('be在to be, or not to be中出现了%d次'%s.count('be'))  
-6.print()  
-7.print('-----2.测试startswith()和endswith()-----')  
-8.print('to be, or not to be是否以to开头? Answer:%s'%s.startswith('to'))  
-9.print('to be, or not to be是否以be结尾? Answer:%s'%s.endswith('be'))  
-10.print()  
-11.print('-----3.测试find()-----')  
-12.print('be是否to be, or not to be的子串? Answer:%s'%bool(s.find('be')+1))  
-13.print('be在to be, or not to be出现的位置:%d'%s.find('be'))  
-14.print()  
-15.print('-----4.测试replace()-----')  
-16.print(s.replace('to','TO',1))  
-17.print()  
-18.print('-----5.测试isidentifier()-----')  
-19.idens=['', '5', '5a', 'a', 'a5', '_', '_3', '__a']  
-20.print([s for s in idens if s.isidentifier()])  
-21.print()  
-22.print('-----6.测试isspace()-----')  
-23.print(['{:02x}'.format(i).upper() for i in range(0,128) if chr(i).isspace()])  
-24.print()  
-25.print('-----7.测试ljust()、rjust()、center()-----')  
-26.ruler='12345678901234567890'  
-27.s='python'  
-28.print(ruler)  
-29.print('|',s.ljust(18),'|',sep='')  
-30.print('|',s.rjust(18),'|',sep='')  
-31.print('|',s.center(18),'|',sep='')  
-32.print(ruler)  
-
-
+```python
+s='to be, or not to be'  
+print('-----1.测试count()-----')  
+print('a在to be, or not to be中出现了%d次'%s.count('a'))  
+print('b在to be, or not to be中出现了%d次'%s.count('b'))  
+print('be在to be, or not to be中出现了%d次'%s.count('be'))  
+print()  
+print('-----2.测试startswith()和endswith()-----')  
+print('to be, or not to be是否以to开头? Answer:%s'%s.startswith('to'))  
+print('to be, or not to be是否以be结尾? Answer:%s'%s.endswith('be'))  
+print()  
+print('-----3.测试find()-----')  
+print('be是否to be, or not to be的子串? Answer:%s'%bool(s.find('be')+1))  
+print('be在to be, or not to be出现的位置:%d'%s.find('be'))  
+print()  
+print('-----4.测试replace()-----')  
+print(s.replace('to','TO',1))  
+print()  
+print('-----5.测试isidentifier()-----')  
+idens=['', '5', '5a', 'a', 'a5', '_', '_3', '__a']  
+print([s for s in idens if s.isidentifier()])  
+print()  
+print('-----6.测试isspace()-----')  
+print(['{:02x}'.format(i).upper() for i in range(0,128) if chr(i).isspace()])  
+print()  
+print('-----7.测试ljust()、rjust()、center()-----')  
+ruler='12345678901234567890'  
+s='python'  
+print(ruler)  
+print('|',s.ljust(18),'|',sep='')  
+print('|',s.rjust(18),'|',sep='')  
+print('|',s.center(18),'|',sep='')  
+print(ruler)  
+```
 
 5.(printable or not?) 
 Python 的 str data type 中对 0-127 的 ascii 字符用 isprintable() 函数来判断该字符是否 printable， string module 中 string.printable 变量按特定顺序给出所有 printable 的字符。分别把它们漂亮打印出来，继而简述这两种方式的异同。
