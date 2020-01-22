@@ -22,7 +22,9 @@ else:  
     cla.print_attrs()  
 ```
 
-2. The Collatz conjecture concerns a sequence defined as follows: start with any positive integer n>1. Then each term is obtained from the previous term as follows: if the previous term is even, the next term is one half the previous term. If the previous term is odd, the next term is 3 times the previous term plus 1. The conjecture is that no matter what value of n, the sequence will always reach 1. 编写一个 python 程序验证 Collatz 猜想在1-1000000之间成立. 
+2. The Collatz conjecture concerns a sequence defined as follows:  
+start with any positive integer n>1. Then each term is obtained from the previous term as follows: if the previous term is even, the next term is one half the previous term. If the previous term is odd, the next term is 3 times the previous term plus 1. The conjecture is that no matter what value of n, the sequence will always reach.  
+编写一个 python 程序验证 Collatz 猜想在1-1000000之间成立. 
 
 ```python
 import sys  
@@ -85,7 +87,8 @@ for i in dates:  
         print('%s is an invalid date.'%i)  
 ```
 
-4. 用os.walk遍历dir1路径 (dir1路径及内含的文件在p401src.zip里): 若遇到的是子路径, 就打印出该路径名后接空格后接D; 若遇到的是文件, 就打印出该文件名后接空格后接文件的大小 (以字节计算).
+4. 用os.walk遍历dir1路径 (dir1路径及内含的文件在p401src.zip里):  
+若遇到的是子路径, 就打印出该路径名后接空格后接D; 若遇到的是文件, 就打印出该文件名后接空格后接文件的大小 (以字节计算).
 
 ```python
 import os  
@@ -169,10 +172,11 @@ if __name__ == '__main__':  
             f.write('%.4f'%(c/(i*i))+'\n')  
 ```
 
-*解释为什么为何 swapcount / (n*n) 趋近于 1/4 as n goes to infinity：  
-因为冒泡排序的过程是遍历前n个元素、遍历前n-1个元素、...、遍历前2个元素，假设整个列表完全反序，那么最多交换n(n-1)/2次。当n趋于无穷时，根据大数定律，列表中正序和反序组合的比例趋于1：1，那么冒泡排序只需要交换n(n-1)/4次。所以swapcount / (n*n)趋于1/4。*
+*解释为什么为何 swapcount / (n\*n) 趋近于 1/4 as n goes to infinity：  
+因为冒泡排序的过程是遍历前n个元素、遍历前n-1个元素、...、遍历前2个元素，假设整个列表完全反序，那么最多交换n(n-1)/2次。当n趋于无穷时，根据大数定律，列表中正序和反序组合的比例趋于1：1，那么冒泡排序只需要交换n(n-1)/4次。所以swapcount / (n\*n)趋于1/4。*
 
-7. 本题考查 zipfile module 的使用.  
+7. 本题考查 zipfile module 的使用.
+
 写出在终端调用 zipfile module 把文件: p401.doc, logistic.model.png, logistic.soln.png打包成zf1.zip的命令：
 ```python
 import zipfile
