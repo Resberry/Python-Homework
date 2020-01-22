@@ -178,393 +178,363 @@ print('|',s.center(18),'|',sep='')  
 print(ruler)  
 ```
 
-5.(printable or not?) 
+5. (printable or not?)  
 Python 的 str data type 中对 0-127 的 ascii 字符用 isprintable() 函数来判断该字符是否 printable， string module 中 string.printable 变量按特定顺序给出所有 printable 的字符。分别把它们漂亮打印出来，继而简述这两种方式的异同。
 
-1.L1=[(chr(i),'{:02x}'.format(i)) for i in range(0,128) if chr(i).isprintable()]  
-2.print('There are %d printable ASCII characters in the str data type.'%len(L1))  
-3.print('C  H|'*15,'C  H',sep='')  
-4.print('----+'*15,'----',sep='')  
-5.for i in range(int(len(L1)/16)+1):  
-6.    for j in range(15):  
-7.        if 16*i+j>len(L1)-1:  
-8.            break  
-9.        print(L1[16*i+j][0].ljust(2),L1[16*i+j][1],'|',sep='',end='')  
-10.    if 16*i+15>len(L1)-1:  
-11.        print('\n',end='')  
-12.        break  
-13.    else:  
-14.        print(L1[16*i+15][0].ljust(2),L1[16*i+15][1],sep='',end='')  
-15.    print('\n',end='')  
-16.print('-'*79)  
+```python
+L1=[(chr(i),'{:02x}'.format(i)) for i in range(0,128) if chr(i).isprintable()]  
+print('There are %d printable ASCII characters in the str data type.'%len(L1))  
+print('C  H|'*15,'C  H',sep='')  
+print('----+'*15,'----',sep='')  
+for i in range(int(len(L1)/16)+1):  
+    for j in range(15):  
+        if 16*i+j>len(L1)-1:  
+            break  
+        print(L1[16*i+j][0].ljust(2),L1[16*i+j][1],'|',sep='',end='')  
+    if 16*i+15>len(L1)-1:  
+        print('\n',end='')  
+        break  
+    else:  
+        print(L1[16*i+15][0].ljust(2),L1[16*i+15][1],sep='',end='')  
+    print('\n',end='')  
+print('-'*79)  
+```
 
+```python
+import string  
+L2=[[repr(i)[1:-1],'{:02x}'.format(ord(i)).upper()] for i in list(string.printable)]  
+L2[85][0]='\\'  
+L2[98][0]=r'\v'  
+L2[99][0]=r'\f'  
+print('There are %d printable ASCII characters in the string module.'%len(L2))  
+print('ch hex|'*9,'ch hex',sep='')  
+print('------+'*9,'------',sep='')  
+for i in range(int(len(L2)/10)):  
+    for j in range(9):  
+        if 10*i+j>len(L2)-1:  
+            break  
+        print(L2[10*i+j][0].rjust(2),' ',L2[10*i+j][1],' |',sep='',end='')  
+    if 10*i+9>len(L2)-1:  
+        print('\n',end='')  
+        break  
+    else:  
+        print(L2[10*i+9][0].rjust(2),' ',L2[10*i+9][1],sep='',end='')  
+    print('\n',end='')  
+print('-'*68)  
+```
 
+*在0-127 的 ascii 字符中，  
+相似：isprintable()和string.printable都包含95个可打印字符。  
+区别：string.printable中额外包含5个转义符。*
 
-1.import string  
-2.L2=[[repr(i)[1:-1],'{:02x}'.format(ord(i)).upper()] for i in list(string.printable)]  
-3.L2[85][0]='\\'  
-4.L2[98][0]=r'\v'  
-5.L2[99][0]=r'\f'  
-6.print('There are %d printable ASCII characters in the string module.'%len(L2))  
-7.print('ch hex|'*9,'ch hex',sep='')  
-8.print('------+'*9,'------',sep='')  
-9.for i in range(int(len(L2)/10)):  
-10.    for j in range(9):  
-11.        if 10*i+j>len(L2)-1:  
-12.            break  
-13.        print(L2[10*i+j][0].rjust(2),' ',L2[10*i+j][1],' |',sep='',end='')  
-14.    if 10*i+9>len(L2)-1:  
-15.        print('\n',end='')  
-16.        break  
-17.    else:  
-18.        print(L2[10*i+9][0].rjust(2),' ',L2[10*i+9][1],sep='',end='')  
-19.    print('\n',end='')  
-20.print('-'*68)  
-
-
-在0-127 的 ascii 字符中，
-相似：isprintable()和string.printable都包含95个可打印字符。
-区别：string.printable中额外包含5个转义符。
-
-6. ROT13
+6. ROT13  
 中文翻译为“回转13位”，其中的ROT是rotation的简写。ROT13 是一种简易的替换式密码算法， 并且是它自身的逆反，即要还原成原文只要再次使用同一算法即可。它的原理是把字母a前移13个位置变为n，把字母b前移13个位置变为o,...，把字母m前移13个位置变为z；把字母n后移13个位置变为a,...，把字母z后移13个位置变为m。大写字母也类似。请编写一个函数 rot13()，把如下的两个句子解码出来。
 
-1.def rot13(s):  
-2.    l1='abcdefghijklmnopqrstuvwxyz'  
-3.    l2='nopqrstuvwxyzabcdefghijklm'  
-4.    code=str.maketrans(l1+l1.upper(),l2+l2.upper())  
-5.    return s.translate(code)  
-6.s1='Yvsr vf cngurgvp, yrg\'f clgubavp!'  
-7.r1=rot13(s1)  
-8.print(r1)  
-9.print(s1 == rot13(r1))  
-10.s2="Jvgu terng cbjre, pbzrf terng erfcbafvovyvgl!"  
-11.r2=rot13(s2)  
-12.print(r2)  
-13.print(s2 == rot13(r2))  
-
-
+```python
+def rot13(s):  
+    l1='abcdefghijklmnopqrstuvwxyz'  
+    l2='nopqrstuvwxyzabcdefghijklm'  
+    code=str.maketrans(l1+l1.upper(),l2+l2.upper())  
+    return s.translate(code)  
+s1='Yvsr vf cngurgvp, yrg\'f clgubavp!'  
+r1=rot13(s1)  
+print(r1)  
+print(s1 == rot13(r1))  
+s2="Jvgu terng cbjre, pbzrf terng erfcbafvovyvgl!"  
+r2=rot13(s2)  
+print(r2)  
+print(s2 == rot13(r2))  
+```
 
 7. 整数和汉字的关系
-19.1 定义两个整数a=47802，b=65226，打印出它们的hex码；
-19.2 把a,b两个整数以native方式pack 成一个 bytes 对象bs (这里视a,b为无符号的16位整数)，打印bs；
-19.3 把bs解码成gbk字符串s，打印s；
-19.4 用open()函数打开一个文本文件struct1.txt，写入s，并额外多写一个换行符后关闭该文件；
-19.5 用open()函数以二进制追加的方式打开struct1.txt，写入bs后关闭该文件；
-19.6 用记事本 (winos) 或者 TextEdit (macos) 打开struct1.txt，正常情况你将看到两行一样的文字。简单解释一下前面的两种写入方式为什么得到了同样的结果。
+   1. 定义两个整数a=47802，b=65226，打印出它们的hex码；
+   2. 把a,b两个整数以native方式pack 成一个 bytes 对象bs (这里视a,b为无符号的16位整数)，打印bs；
+   3. 把bs解码成gbk字符串s，打印s；
+   4. 用open()函数打开一个文本文件struct1.txt，写入s，并额外多写一个换行符后关闭该文件；
+   5. 用open()函数以二进制追加的方式打开struct1.txt，写入bs后关闭该文件；
+   6. 用记事本 (winos) 或者 TextEdit (macos) 打开struct1.txt，正常情况你将看到两行一样的文字。简单解释一下前面的两种写入方式为什么得到了同样的结果。
 
-1.from struct import pack  
-2.a=47802  
-3.b=65226  
-4.print('hex(a) = %s'%hex(a))  
-5.print('hex(b) = %s'%hex(b))  
-6.bs=pack('HH',a,b)  
-7.s=bs.decode('gbk')  
-8.print('bs = %s'%bs)  
-9.print('s = %s'%s)  
-10.with open('struct1.txt','w') as f:  
-11.    f.write(s+'\n')  
-12.with open('struct1.txt','ab') as f:  
-13.    f.write(bs)  
+```python
+from struct import pack  
+a=47802  
+b=65226  
+print('hex(a) = %s'%hex(a))  
+print('hex(b) = %s'%hex(b))  
+bs=pack('HH',a,b)  
+s=bs.decode('gbk')  
+print('bs = %s'%bs)  
+print('s = %s'%s)  
+with open('struct1.txt','w') as f:  
+    f.write(s+'\n')  
+with open('struct1.txt','ab') as f:  
+    f.write(bs)  
+```
 
+*解释：第一种直接将文字写入文档；第二种将同样的文字转为二进制形式，然后写入以二进制形式打开的文档，结果一样。*
 
-
-解释：第一种直接将文字写入文档；第二种将同样的文字转为二进制形式，然后写入以二进制形式打开的文档，结果一样。
-
-8. (GB 2312) 
+8. (GB 2312)  
 用 python 程序把 GB2312 字符集中的 6763 个汉字输出到文本文件 gb2312.txt，每行16个汉字 (最后一行可少于16个)。在报告中简述你是如何找到这些汉字的。
 
-1.l=['fa','fb','fc','fd','fe']  
-2.ls=[]  
-3.for head in range(0xb0,0xf8):  
-4.    for body in range(0xa1,0xff):  
-5.        val=f'{head:x}{body:x}'  
-6.        if val[:2]=='d7' and val[2:] in l:  
-7.            pass  
-8.        else:  
-9.            str=bytes.fromhex(val).decode('gb2312')       
-10.            ls.append(str)  
-11.with open('gb2312.txt','w') as f:  
-12.    for i in range(int(len(ls)/16)+2):  
-13.        for j in range(16):  
-14.            if 16*i+j+1<=len(ls):  
-15.                f.write(ls[16*i+j])  
-16.        f.write('\n')  
+```python
+l=['fa','fb','fc','fd','fe']  
+ls=[]  
+for head in range(0xb0,0xf8):  
+    for body in range(0xa1,0xff):  
+        val=f'{head:x}{body:x}'  
+        if val[:2]=='d7' and val[2:] in l:  
+            pass  
+        else:  
+            str=bytes.fromhex(val).decode('gb2312')       
+            ls.append(str)  
+with open('gb2312.txt','w') as f:  
+    for i in range(int(len(ls)/16)+2):  
+        for j in range(16):  
+            if 16*i+j+1<=len(ls):  
+                f.write(ls[16*i+j])  
+        f.write('\n')  
+```
 
-通过汉字的编码找到的这些汉字，GB2312汉字的编码范围为B0A1-F7FE。
+*通过汉字的编码找到的这些汉字，GB2312汉字的编码范围为B0A1-F7FE。*
 
 9. (png file) 图像信息的提取
-21.1 自制一个合法的.png文件，图中显示个人姓名的全部拼音；
-21.2 简述png文件头的结构；
-21.3 写一段python程序打印该png文件的width和height。
+   1. 自制一个合法的.png文件，图中显示个人姓名的全部拼音；
+   2. 简述png文件头的结构；
+   3. 写一段python程序打印该png文件的width和height。
 
-png文件头结构：
-89 50 4E 47 0D 0A 1A 0A：PNG头部署名域，表示这是一个PNG图片
-00 00 00 0D：描述IHDR头部的大小
-49 48 44 52：表示Chunk Type Code，此处为IHDR
-00 00 00 CE 00 00 00 CE 08 02 00 00 00：描述Chunk Data
-F9 7D AA 93：对IHDR的CRC校验
+*png文件头结构：  
+89 50 4E 47 0D 0A 1A 0A：PNG头部署名域，表示这是一个PNG图片  
+00 00 00 0D：描述IHDR头部的大小  
+49 48 44 52：表示Chunk Type Code，此处为IHDR  
+00 00 00 CE 00 00 00 CE 08 02 00 00 00：描述Chunk Data  
+F9 7D AA 93：对IHDR的CRC校验*
 
-1.from struct import unpack   
-2.with open('zyp.png','rb') as f:  
-3.    n=f.read(16)  
-4.    s=f.read(8)  
-5.w,l=unpack('>II',s)    
-6.print('width = %d, height = %d'%(w,l))  
+```python
+from struct import unpack   
+with open('zyp.png','rb') as f:  
+    n=f.read(16)  
+    s=f.read(8)  
+w,l=unpack('>II',s)    
+print('width = %d, height = %d'%(w,l))  
+```
 
-
-
-10. nested sum
+10. nested sum  
 Write a function called nested_sum that takes a nested list of integers and adds up the elements.
 
-1.def nested_sum(l):  
-2.    s=0  
-3.    for i in l:  
-4.        if isinstance(i,list):  
-5.            s=s+nested_sum(i)  
-6.        else:  
-7.            s=s+i  
-8.    return s  
-9.L1=list(range(100))  
-10.print(nested_sum(L1))  
-11.L2 = [[1, 2], 3, [4, 5, 6]]  
-12.print(nested_sum(L2))  
-13.L3 = [[1, 2], [3], [4, 5, 6]]  
-14.print(nested_sum(L3))  
-15.L4 = [1, 2, [3], [4, 5, 6]]  
-16.print(nested_sum(L4))  
-17.L5 = [[1, 2], [3], [4, 5, 6]]  
-18.print(nested_sum(L5))  
-19.L6 = [[1, 2], [3], [4, 5, 6], [[7, 8], 9]]  
-20.print(nested_sum(L6))  
-21.L7 = [[1, 2], [3], [4, 5, 6], [[7, 8], [9]]]  
-22.print(nested_sum(L7))  
-
-
+```python
+def nested_sum(l):  
+    s=0  
+    for i in l:  
+        if isinstance(i,list):  
+            s=s+nested_sum(i)  
+        else:  
+            s=s+i  
+    return s  
+L1=list(range(100))  
+print(nested_sum(L1))  
+L2 = [[1, 2], 3, [4, 5, 6]]  
+print(nested_sum(L2))  
+L3 = [[1, 2], [3], [4, 5, 6]]  
+print(nested_sum(L3))  
+L4 = [1, 2, [3], [4, 5, 6]]  
+print(nested_sum(L4))  
+L5 = [[1, 2], [3], [4, 5, 6]]  
+print(nested_sum(L5))  
+L6 = [[1, 2], [3], [4, 5, 6], [[7, 8], 9]]  
+print(nested_sum(L6))  
+L7 = [[1, 2], [3], [4, 5, 6], [[7, 8], [9]]]  
+print(nested_sum(L7))  
+```
 
 11. (two dimensional array) 矩阵的转置和乘法
-23.1 随机产生三个正整数m,n,q，三者都在2和9之间，包含2和9，打印m,n,q；
-23.2 随机产生一个m行n列的矩阵A，该矩阵的每个元素在-99到99之间，包含-99和99。打印A和A的转置矩阵；
-23.3 随机产生一个n行q列的矩阵B，该矩阵的每个元素在-99到99之间，包含-99和99。A和B的乘积记为C，打印B和C。
+   1. 随机产生三个正整数m,n,q，三者都在2和9之间，包含2和9，打印m,n,q；
+   2. 随机产生一个m行n列的矩阵A，该矩阵的每个元素在-99到99之间，包含-99和99。打印A和A的转置矩阵；
+   3. 随机产生一个n行q列的矩阵B，该矩阵的每个元素在-99到99之间，包含-99和99。A和B的乘积记为C，打印B和C。
 
-1.import random  
-2.import numpy as np  
-3.def printmatrix(matrix):  
-4.    m=matrix.shape[0]  
-5.    n=matrix.shape[1]  
-6.    print('  |',end='',sep='')  
-7.    for i in range(n):  
-8.        print('  ',i+1,end='')  
-9.    print('\n',end='')  
-10.    print('---'+'-'*4*n)  
-11.    for i in range(m):  
-12.        print(i+1,'| ',end='')  
-13.        for j in range(n):  
-14.            print(str(matrix[i][j]).rjust(3),'',end='')  
-15.        print('\n')   
-16.def printbigmatrix(matrix):  
-17.    m=matrix.shape[0]  
-18.    n=matrix.shape[1]  
-19.    print('  |',end='',sep='')  
-20.    for i in range(n):  
-21.        print('     ',i+1,end='')  
-22.    print('\n',end='')  
-23.    print('---'+'-'*7*n)  
-24.    for i in range(m):  
-25.        print(i+1,'| ',end='')  
-26.        for j in range(n):  
-27.            print(str(matrix[i][j]).rjust(6),'',end='')  
-28.        print('\n')   
-29.m=random.randint(2,9)  
-30.n=random.randint(2,9)  
-31.q=random.randint(2,9)  
-32.A=np.random.randint(-99,99,(m,n))  
-33.B=np.random.randint(-99,99,(n,q))  
-34.print('m = %d, n = %d, q = %d'%(m,n,q)+'\n')  
-35.print('The matrix A is')  
-36.printmatrix(A)  
-37.print()  
-38.print('The transpose of matrix A is')  
-39.printmatrix(A.T)  
-40.print()  
-41.print('The matrix B is')  
-42.printmatrix(B)  
-43.print()  
-44.print('The matrix C=A*B is')  
-45.printbigmatrix(np.dot(A,B))  
+```python
+import random  
+import numpy as np  
+def printmatrix(matrix):  
+    m=matrix.shape[0]  
+    n=matrix.shape[1]  
+    print('  |',end='',sep='')  
+    for i in range(n):  
+        print('  ',i+1,end='')  
+    print('\n',end='')  
+    print('---'+'-'*4*n)  
+    for i in range(m):  
+        print(i+1,'| ',end='')  
+        for j in range(n):  
+            print(str(matrix[i][j]).rjust(3),'',end='')  
+        print('\n')   
+def printbigmatrix(matrix):  
+    m=matrix.shape[0]  
+    n=matrix.shape[1]  
+    print('  |',end='',sep='')  
+    for i in range(n):  
+        print('     ',i+1,end='')  
+    print('\n',end='')  
+    print('---'+'-'*7*n)  
+    for i in range(m):  
+        print(i+1,'| ',end='')  
+        for j in range(n):  
+            print(str(matrix[i][j]).rjust(6),'',end='')  
+        print('\n')   
+m=random.randint(2,9)  
+n=random.randint(2,9)  
+q=random.randint(2,9)  
+A=np.random.randint(-99,99,(m,n))  
+B=np.random.randint(-99,99,(n,q))  
+print('m = %d, n = %d, q = %d'%(m,n,q)+'\n')  
+print('The matrix A is')  
+printmatrix(A)  
+print()  
+print('The transpose of matrix A is')  
+printmatrix(A.T)  
+print()  
+print('The matrix B is')  
+printmatrix(B)  
+print()  
+print('The matrix C=A*B is')  
+printbigmatrix(np.dot(A,B))  
+```
 
-
-
-
-12. (Kobe Shot Selection) Kobe投篮数据集的初步分析
+12. (Kobe Shot Selection) Kobe投篮数据集的初步分析  
 数据 data.csv 可以通过课程网站的主页 or 课程ftp的下载账号获取相应的.zip文件后解压得到。
-24.1 用汉语简单解释一下25个字段的意义:
-字段	意义
-action_type	具体进攻方式
-combined_shot_type	进攻方式
-game_event_id	比赛时间id
-game_id	比赛id
-lat	纬度
-loc_x	X轴位置
-loc_y	Y轴位置
-lon	经度
-minutes_remaining	剩余时间
-period	节数
-playoffs	是否为季后赛
-season	赛季
-seconds_remaining	剩余秒数
-shot_distance	投篮距离
-shot_made_flag	是否进球
-shot_type	两分球或三分球
-shot_zone_area	投篮区域
-shot_zone_basic	具体投篮区域
-shot_zone_range	投篮范围
-team_id	队伍id
-team_name	队伍名字
-game_date	比赛日期
-matchup	比赛双方
-opponent	对手
-shot_id	投篮id
-24.2 打印出所有的不同的 action_type；
-24.3 打印出所有的不同的 combined_shot_type；
-24.4 多种 action_type 可以被“归类” (combined) 到同一种 combined_shot_type，请打印出所有的combined_shot_type及其对应的多种 action_type；
-24.5 统计每一种combined_shot_type的频率 (即Kobe用该种方式投篮的次数)，用matplotlib的bar()函数画出该频率的直方图；
-24.6 打印Kobe曾效力的球队；
-24.7 打印出所有的不同的 shot_zone_range；
-24.8 打印出所有的不同的 shot_type；
-24.9 打印出所有的不同的 shot_made_flag，并解释不同的shot_made_flag的意义；
-24.10 shot_made_flag==''代表该数据缺失了，请把这些信息写入到 kobe_missing.csv文件，shot_id为该行的最后一列，shot_made_flag因为缺失了，我们统一赋值为0.5。
-24.11 统计Kobe总共参与了多少场比赛；
-24.12 统计Kobe总共打了多少场季后赛(playoffs)；
-24.13 统计Kobe季后赛总投篮次数；
-24.14 打印Kobe参加的最早一场比赛的日期，及该场比赛的投篮次数；
-24.15 打印Kobe参加的最后一场比赛的日期，及该场比赛投中、投失、or数据缺失的次数(由shot_made_flag字段确定)；
-24.6 打印Kobe得分最多的一场比赛的日期，及该场比赛的投篮次数、二分球个数、三分球个数(如果有数据缺失，缺失的部分不用统计)。
+   1. 打印出所有的不同的 action_type；
+   2. 打印出所有的不同的 combined_shot_type；
+   3. 多种 action_type 可以被“归类” (combined) 到同一种 combined_shot_type，请打印出所有的combined_shot_type及其对应的多种 action_type；
+   4. 统计每一种combined_shot_type的频率 (即Kobe用该种方式投篮的次数)，用matplotlib的bar()函数画出该频率的直方图；
+   5. 打印Kobe曾效力的球队；
+   6. 打印出所有的不同的 shot_zone_range；
+   7. 打印出所有的不同的 shot_type；
+   8. 打印出所有的不同的 shot_made_flag，并解释不同的shot_made_flag的意义；
+   9. shot_made_flag==''代表该数据缺失了，请把这些信息写入到 kobe_missing.csv文件，shot_id为该行的最后一列，shot_made_flag因为缺失了，我们统一赋值为0.5。
+   10. 统计Kobe总共参与了多少场比赛；
+   11. 统计Kobe总共打了多少场季后赛(playoffs)；
+   12. 统计Kobe季后赛总投篮次数；
+   13. 打印Kobe参加的最早一场比赛的日期，及该场比赛的投篮次数；
+   14. 打印Kobe参加的最后一场比赛的日期，及该场比赛投中、投失、or数据缺失的次数(由shot_made_flag字段确定)；
+   15. 打印Kobe得分最多的一场比赛的日期，及该场比赛的投篮次数、二分球个数、三分球个数(如果有数据缺失，缺失的部分不用统计)。
 
-1.import matplotlib.pyplot as plt  
-2.import csv  
-3.data=[]  
-4.dic={}  
-5.dic2={}  
-6.with open('data.csv','r') as f:  
-7.    reader=csv.reader(f)  
-8.    for row in reader:  
-9.        data.append(row)  
-10.column1=[row[0] for row in data[1:]]  
-11.column2=[row[1] for row in data[1:]]  
-12.team=data[1][20]  
-13.gameidall=[row[3] for row in data[1:]]  
-14.gameid=list(set(gameidall))
-15.Gameid.sort()  
-16.shotzone=set([row[18] for row in data[1:]])  
-17.times=set([row[3] for row in data[1:]])  
-18.shotmiss=[row[14] for row in data[1:]]  
-19.playoffs=[row[10] for row in data[1:]]  
-20.date=[row[21] for row in data[1:]]  
-21.date2=date[:]  
-22.date2.sort()  
-23.start=[i for i,j in enumerate(date) if j==date2[0]]  
-24.end=[i for i,j in enumerate(date) if j==date2[-1]]  
-25.shotstart=shotmiss[start[0]:start[-1]+1]  
-26.shotend=shotmiss[end[0]:end[-1]+1]  
-27.t=playoffs.index('1')  
-28.playoffshottimes=[row[3] for row in data[t+1:]]  
-29.playofftimes=set(playoffshottimes)  
-30.shotflag=set(shotmiss)  
-31.flag=[]  
-32.for i in range(len(shotmiss)):  
-33.    if shotmiss[i]=='1':  
-34.        flag.append(1)  
-35.    else:  
-36.        flag.append(0)  
-37.pt=[row[15] for row in data[1:]]  
-38.pt2=[int(j[0])*flag[i] for i,j in enumerate(pt)]  
-39.score=[]  
-40.for i in gameid:  
-41.    index=[z for z,j in enumerate(gameidall) if j==i]  
-42.    score.append(sum(pt2[index[0]:index[-1]+1]))  
-43.maxscore=max(score)  
-44.ind2=score.index(maxscore)  
-45.maxgame=gameid[ind2]  
-46.index==[i for i,j in enumerate(gameidall) if j==maxgame]  
-47.shottype=set(pt)  
-48.l1=set(column1)  
-49.l2=set(column2)  
-50.for i in l2:  
-51.    dic[i]=[]  
-52.    dic2[i]=column2.count(i)  
-53.X=list(dic2.keys())  
-54.Y=list(dic2.values())  
-55.for i in l1:  
-56.    ind=column1.index(i)  
-57.    dic[column2[ind]].append(i)  
-58.header=['shot_id','shot_made_flag']  
-59.miss=[[i+1,0.5] for i,j in enumerate(shotmiss) if j=='']  
-60.with open('kobe_missing.csv','w',newline='') as f:  
-61.    writer=csv.writer(f)  
-62.    writer.writerow(header)  
-63.    for row in miss:  
-64.        writer.writerow(row)  
-65.print('----- 2. action_type -----')  
-66.print('There are %d action types:'%len(l1))  
-67.print(l1)  
-68.print()  
-69.print('----- 3. combined_shot_type -----')  
-70.print('There are %d combined shot types:'%len(l2))  
-71.print(l2)  
-72.print()  
-73.print('----- 4. details of combined_shot_type -----')  
-74.for i in dic.keys():  
-75.    print(i.ljust(10),str(len(dic[i])).ljust(3),','.join(dic[i]))  
-76.print()  
-77.print('----- 5. combined_shot_type 的直方图 -----')  
-78.print(dic2)  
-79.plt.bar(X,Y)  
-80.plt.show()  
-81.print()  
-82.print('----- 6. Kobe 曾效力的球队 -----')  
-83.print(team)  
-84.print()  
-85.print('----- 7. shot_zone_range -----')  
-86.print(shotzone)  
-87.print()  
-88.print('----- 8. shot_type -----')  
-89.print(shottype)  
-90.print()  
-91.print('----- 9. shot_made_flag -----')  
-92.print(shotflag)  
-93.print()  
-94.print('----- 10. shot_made_flag (missing data) -----')  
-95.print(len(miss))  
-96.print()  
-97.print('----- 11. Kobe总共参与了多少场比赛 -----')  
-98.print(len(times))  
-99.print()  
-100.print('----- 12. Kobe总共打了多少场季后赛 (playoffs) -----')  
-101.print(len(playofftimes))  
-102.print()  
-103.print('----- 13. Kobe季后赛总投篮次数 -----')  
-104.print(len(playoffshottimes))  
-105.print()  
-106.print('----- 14. Kobe参加的最早一场比赛 -----')  
-107.print('最早一场比赛的日期: %s'%date2[1])  
-108.print('最早一场比赛的投篮次数: %d'%len(shotstart))  
-109.print()  
-110.print('----- 15. Kobe参加的最后一场比赛 -----')  
-111.print('最后一场比赛的日期: %s'%date2[-1])  
-112.print('最后一场比赛投中的次数: %d'%shotend.count('1'))  
-113.print('最后一场比赛投失的次数: %d'%shotend.count('0'))  
-114.print('最后一场比赛数据缺失的次数: %d'%shotend.count(''))  
-115.print()  
-116.print('----- 16. Kobe得分最多的一场比赛 -----')  
-117.print('得分最多的一场比赛的日期: %s'%date[index[0]])  
-118.print('得分最多的一场比赛的投篮次数: %d'%len(date[index[0]:index[-1]]))  
-119.print('得分最多的一场比赛的二分球个数: %d'%pt2[index[0]:index[-1]].count(2))  
-120.print('得分最多的一场比赛的三分球个数: %d'%pt2[index[0]:index[-1]].count(3))  
-
-
-
-
-
-
-
+```python
+import matplotlib.pyplot as plt  
+import csv  
+data=[]  
+dic={}  
+dic2={}  
+with open('data.csv','r') as f:  
+    reader=csv.reader(f)  
+    for row in reader:  
+        data.append(row)  
+column1=[row[0] for row in data[1:]]  
+column2=[row[1] for row in data[1:]]  
+team=data[1][20]  
+gameidall=[row[3] for row in data[1:]]  
+gameid=list(set(gameidall))
+Gameid.sort()  
+shotzone=set([row[18] for row in data[1:]])  
+times=set([row[3] for row in data[1:]])  
+shotmiss=[row[14] for row in data[1:]]  
+playoffs=[row[10] for row in data[1:]]  
+date=[row[21] for row in data[1:]]  
+date2=date[:]  
+date2.sort()  
+start=[i for i,j in enumerate(date) if j==date2[0]]  
+end=[i for i,j in enumerate(date) if j==date2[-1]]  
+shotstart=shotmiss[start[0]:start[-1]+1]  
+shotend=shotmiss[end[0]:end[-1]+1]  
+t=playoffs.index('1')  
+playoffshottimes=[row[3] for row in data[t+1:]]  
+playofftimes=set(playoffshottimes)  
+shotflag=set(shotmiss)  
+flag=[]  
+for i in range(len(shotmiss)):  
+    if shotmiss[i]=='1':  
+        flag.append(1)  
+    else:  
+        flag.append(0)  
+pt=[row[15] for row in data[1:]]  
+pt2=[int(j[0])*flag[i] for i,j in enumerate(pt)]  
+score=[]  
+for i in gameid:  
+    index=[z for z,j in enumerate(gameidall) if j==i]  
+    score.append(sum(pt2[index[0]:index[-1]+1]))  
+maxscore=max(score)  
+ind2=score.index(maxscore)  
+maxgame=gameid[ind2]  
+index==[i for i,j in enumerate(gameidall) if j==maxgame]  
+shottype=set(pt)  
+l1=set(column1)  
+l2=set(column2)  
+for i in l2:  
+    dic[i]=[]  
+    dic2[i]=column2.count(i)  
+X=list(dic2.keys())  
+Y=list(dic2.values())  
+for i in l1:  
+    ind=column1.index(i)  
+    dic[column2[ind]].append(i)  
+header=['shot_id','shot_made_flag']  
+miss=[[i+1,0.5] for i,j in enumerate(shotmiss) if j=='']  
+with open('kobe_missing.csv','w',newline='') as f:  
+    writer=csv.writer(f)  
+    writer.writerow(header)  
+    for row in miss:  
+        writer.writerow(row)  
+print('----- 2. action_type -----')  
+print('There are %d action types:'%len(l1))  
+print(l1)  
+print()  
+print('----- 3. combined_shot_type -----')  
+print('There are %d combined shot types:'%len(l2))  
+print(l2)  
+print()  
+print('----- 4. details of combined_shot_type -----')  
+for i in dic.keys():  
+    print(i.ljust(10),str(len(dic[i])).ljust(3),','.join(dic[i]))  
+print()  
+print('----- 5. combined_shot_type 的直方图 -----')  
+print(dic2)  
+plt.bar(X,Y)  
+plt.show()  
+print()  
+print('----- 6. Kobe 曾效力的球队 -----')  
+print(team)  
+print()  
+print('----- 7. shot_zone_range -----')  
+print(shotzone)  
+print()  
+print('----- 8. shot_type -----')  
+print(shottype)  
+print()  
+print('----- 9. shot_made_flag -----')  
+print(shotflag)  
+print()  
+print('----- 10. shot_made_flag (missing data) -----')  
+print(len(miss))  
+print()  
+print('----- 11. Kobe总共参与了多少场比赛 -----')  
+print(len(times))  
+print()  
+print('----- 12. Kobe总共打了多少场季后赛 (playoffs) -----')  
+print(len(playofftimes))  
+print()  
+print('----- 13. Kobe季后赛总投篮次数 -----')  
+print(len(playoffshottimes))  
+print()  
+print('----- 14. Kobe参加的最早一场比赛 -----')  
+print('最早一场比赛的日期: %s'%date2[1])  
+print('最早一场比赛的投篮次数: %d'%len(shotstart))  
+print()  
+print('----- 15. Kobe参加的最后一场比赛 -----')  
+print('最后一场比赛的日期: %s'%date2[-1])  
+print('最后一场比赛投中的次数: %d'%shotend.count('1'))  
+print('最后一场比赛投失的次数: %d'%shotend.count('0'))  
+print('最后一场比赛数据缺失的次数: %d'%shotend.count(''))  
+print()  
+print('----- 16. Kobe得分最多的一场比赛 -----')  
+print('得分最多的一场比赛的日期: %s'%date[index[0]])  
+print('得分最多的一场比赛的投篮次数: %d'%len(date[index[0]:index[-1]]))  
+print('得分最多的一场比赛的二分球个数: %d'%pt2[index[0]:index[-1]].count(2))  
+print('得分最多的一场比赛的三分球个数: %d'%pt2[index[0]:index[-1]].count(3))  
+```
